@@ -42,7 +42,7 @@ io.on('connection', (socket) =>{
     api_call.API_Call(url)
       .then(response => {
         var result = parsing.parseFunc(response.states);
-        console.log('result: '+counter + " "+result);
+        //console.log('result: '+counter + " "+result);
         socket.emit('RESPONSE',result);
         // socket.on('SEND_MESSAGE', function(data){
         //   io.emit('MESSAGE', data)

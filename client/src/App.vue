@@ -1,43 +1,29 @@
 <template>
-  <div id="app">
-    <p>Hey</p>
-  </div>
+  <v-app>
+    <Navbar />
+    <FlightInfo />
+  </v-app>
 </template>
 
 <script>
-import io from 'socket.io-client'
+import Navbar from "./components/Navbar";
+import FlightInfo from './components/FlightInfo'
+
+import io from "socket.io-client";
 
 export default {
-  data(){
-    return{
-      socket: io('http://localhost:3000')
-    }
+  name: "App",
+  components: {
+    Navbar,
+    FlightInfo
   },
+  data: () => ({
+    socket: io("http://localhost:3000")
+  }),
   mounted(){
     this.socket.on('RESPONSE', (data) => {
-      console.log('VEri geldi veri')
+      console.log(data)
     });
   }
-}
+};
 </script>
-
-
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
