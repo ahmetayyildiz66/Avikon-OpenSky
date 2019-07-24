@@ -1,12 +1,26 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <p>Hey</p>
   </div>
 </template>
+
+<script>
+import io from 'socket.io-client'
+
+export default {
+  data(){
+    return{
+      socket: io('http://localhost:3000')
+    }
+  },
+  mounted(){
+    this.socket.on('RESPONSE', (data) => {
+      console.log('VEri geldi veri')
+    });
+  }
+}
+</script>
+
 
 <style lang="scss">
 #app {
