@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <Navbar />
-    <FlightInfo />
+    <FlightInfo v-if="result" :response="result"/>
   </v-app>
 </template>
 
@@ -18,10 +18,12 @@ export default {
     FlightInfo
   },
   data: () => ({
-    socket: io("http://localhost:3000")
+    socket: io("http://localhost:3000"),
+    result: []
   }),
   mounted(){
     this.socket.on('RESPONSE', (data) => {
+      this.result = data
       console.log(data)
     });
   }
