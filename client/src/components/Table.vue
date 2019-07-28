@@ -1,39 +1,83 @@
 <template>
-  <div>
-    <table border="1" style="width:100%">
-      <tr>
-        <th align="left">
-          <button v-on:click="submit" style="width: 100%">
-            Firstname
-            <v-icon>search</v-icon>
-          </button>
-        </th>
-        <th align="left">Lastname</th>
-        <th align="left">Age</th>
-      </tr>
-      <tr>
-        <td>Jill</td>
-        <td>Smith</td>
-        <td>50</td>
-      </tr>
-      <tr>
-        <td>Eve</td>
-        <td>Jackson</td>
-        <td>94</td>
-      </tr>
-    </table>
-  </div>
+  <v-card>
+    <v-card-title>
+      Uçuş Tablosu
+      <v-spacer></v-spacer>
+      <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+    </v-card-title>
+    <v-data-table :headers="headers" :items="items" :search="search"></v-data-table>
+  </v-card>
 </template>
 <script>
 export default {
-  name: 'table',
-  methods:{
-    submit(){
-      console.log('Clicked on firstname')
-    }
+  name: "dataTable",
+  data() {
+    return {
+      search: "",
+      headers: [
+        {
+          text: "Çağrı Kodu",
+          align: "left",
+          value: "callSign"
+        },
+        {
+          text: "Menşei Ülke",
+          value: "originCountry"
+        },
+        {
+          text: "Boylam",
+          value: "longitude"
+        },
+        {
+          text: "Enlem",
+          value: "latitude"
+        },
+        {
+          text: "Uçak indi mi?",
+          value: "isLanded"
+        },
+        {
+          text: "Hız",
+          value: "velocity"
+        }
+      ]
+    };
   },
-  props: {
-    result: []
+  props: ["response"],
+  computed: {
+    items() {
+      let items = [];
+      let obj = {};
+
+      if (this.response.length > 1) {
+        for (let i = 0; i < this.response.length; i++) {
+          let obj = {};
+
+          for (let k = 0; k < 6; k++) {
+            let tempRes = this.response[i][k];
+            if (k % 6 == 0) {
+              obj.callSign = tempRes;
+            } else if (k % 6 == 1) {
+              obj.originCountry = tempRes;
+            } else if (k % 6 == 2) {
+              obj.longitude = tempRes;
+            } else if (k % 6 == 3) {
+              obj.latitude = tempRes;
+            } else if (k % 6 == 4) {
+              tempRes == true
+                ? (obj.isLanded = "Evet")
+                : (obj.isLanded = "Hayır");
+            } else if (k % 6 == 5) {
+              obj.velocity = this.response[i][k];
+            }
+          }
+          items.push(obj);
+        }
+      }
+
+      return items;
+    }
   }
-}
+};
 </script>
+
